@@ -1,0 +1,52 @@
+---
+description: Guidelines for developing the Bot Tok application, focusing on Node.js, Puppeteer, and web automation best practices
+globs: ["**/*.js", "**/*.ts", "**/*.json"]
+alwaysApply: true
+---
+
+# Bot Tok Development Guidelines
+
+## General Principles
+- **Modularity**: Break down functionalities into small, testable modules (e.g., separate services for each TikTok action)
+- **Error Handling**: Implement robust error handling for all web automation steps, including retries and fallbacks
+- **Concurrency**: Be mindful of concurrency and rate limits when interacting with external services. Use Puppeteer's capabilities efficiently
+- **Security**: Be aware of the security implications of using third-party services and handling user data (even if limited to session data). Avoid hardcoding sensitive information
+- **Maintainability**: Write clean, readable, and well-commented code. Prioritize clear variable names and function signatures
+- **Ethical Use**: Remind developers that using a TikTok viewbot is against TikTok's Terms of Service. The tool is provided for educational/research purposes and use is at the user's own risk
+
+## Node.js & Puppeteer Best Practices
+- **Puppeteer Initialization**: Ensure Puppeteer instances are properly launched and closed to prevent resource leaks
+- **Selectors**: Use resilient CSS selectors to interact with web elements. Consider using multiple selectors as fallbacks if UI changes frequently
+- **Headless Mode**: Default to headless mode for performance, but allow options for non-headless mode during development/debugging
+- **Page Navigation**: Handle page navigation and waits for network idle or specific elements to load before proceeding
+- **Captcha Handling**: Integrate with a robust captcha solving mechanism. If an external service is used, ensure its API integration is reliable
+- **Session Management**: Securely store and load session cookies. Implement mechanisms for session expiration and renewal
+- **User-Agents & Proxies**: Implement logic to rotate User-Agents and proxies to avoid detection and bans
+- **Logging**: Use a structured logging library (e.g., Winston, Pino) for detailed activity logs, errors, and debugging information
+
+## Code Style & Structure
+- **JavaScript/TypeScript**: Adhere to a consistent coding style (e.g., ESLint with a popular style guide like Airbnb)
+- **Asynchronous Operations**: Primarily use `async/await` for asynchronous operations for better readability
+- **Configuration**: Centralize all configurable parameters in the `src/config` directory
+- **Dependency Management**: Clearly define all project dependencies in `package.json`
+
+## Project Architecture
+- **Service Layer**: Implement services for each TikTok action (views, likes, shares, favorites)
+- **Controller Layer**: Handle business logic and coordinate between services
+- **Utility Layer**: Provide helper functions for proxy rotation, User-Agent generation, logging
+- **Configuration Layer**: Centralize all settings and third-party provider URLs
+- **Data Layer**: Implement session management and task history if database is used
+
+## Cursor IDE Specifics
+- **Context**: When asking for code generation, provide relevant file context using `@file` or `@folder`
+- **Planning**: Utilize Cursor's planning capabilities to outline complex features or refactoring tasks
+- **Testing**: When generating tests, ensure they cover edge cases and error scenarios, especially for web automation
+- **Documentation**: Generate JSDoc comments for functions and modules
+- **Refactoring**: When refactoring existing code, prioritize small, incremental changes
+- **Project Structure Awareness**: Always check project structure before making changes
+
+## Performance & Reliability
+- **Rate Limiting**: Implement intelligent delays between actions to avoid detection
+- **Retry Mechanisms**: Add retry logic for failed operations with exponential backoff
+- **Resource Management**: Properly manage Puppeteer browser instances and page objects
+- **Memory Management**: Avoid memory leaks by properly closing resources and cleaning up
