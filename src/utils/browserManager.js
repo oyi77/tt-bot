@@ -174,7 +174,8 @@ class BrowserManager {
       const userAgentPath = config.session.userAgentPath;
       if (!await fs.pathExists(userAgentPath)) {
         // Return default user agent if file doesn't exist
-        return 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
+        return 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
+          + '(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
       }
 
       const userAgents = await fs.readJson(userAgentPath);
@@ -183,7 +184,8 @@ class BrowserManager {
     } catch (error) {
       logger.logError(error, { action: 'getRandomUserAgent' });
       // Return default user agent on error
-      return 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
+      return 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
+        + '(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
     }
   }
 
@@ -197,12 +199,11 @@ class BrowserManager {
     if (!browserData) return false;
 
     const { browser, page, createdAt } = browserData;
-    const now = Date.now();
 
     // Check if browser is still running and not expired
     return browser && browser.process()
-           && page && !page.isClosed()
-           && (now - createdAt) < config.session.sessionTimeout;
+      && page && !page.isClosed()
+      && (Date.now() - createdAt) < config.session.sessionTimeout;
   }
 
   /**
@@ -216,12 +217,11 @@ class BrowserManager {
       expiredSessions: 0,
     };
 
-    const now = Date.now();
-    for (const [sessionId, browserData] of this.browsers) {
+    for (const [sessionId] of this.browsers) {
       if (this.isBrowserValid(sessionId)) {
-        stats.activeSessions++;
+        stats.activeSessions += 1;
       } else {
-        stats.expiredSessions++;
+        stats.expiredSessions += 1;
       }
     }
 
@@ -234,10 +234,9 @@ class BrowserManager {
    */
   async cleanupExpiredSessions() {
     const expiredSessions = [];
-    const now = Date.now();
 
     for (const [sessionId, browserData] of this.browsers) {
-      if ((now - browserData.createdAt) >= config.session.sessionTimeout) {
+      if ((Date.now() - browserData.createdAt) >= config.session.sessionTimeout) {
         expiredSessions.push(sessionId);
       }
     }

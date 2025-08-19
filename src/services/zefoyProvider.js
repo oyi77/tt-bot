@@ -39,7 +39,6 @@ class ZefoyProvider extends BaseProvider {
     }
 
     const sessionId = uuidv4();
-    let browser = null;
     let page = null;
 
     try {

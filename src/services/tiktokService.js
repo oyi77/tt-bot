@@ -305,7 +305,7 @@ class TikTokService {
 
       task.status = 'failed';
       task.error = error.message;
-              task.attempts += 1;
+      task.attempts += 1;
       this.completeTask(taskId, task);
     }
   }

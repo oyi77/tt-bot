@@ -85,5 +85,8 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: build-files
-        path: dist/
+        path: |
+          src/
+          package.json
+          package-lock.json
         retention-days: 30
